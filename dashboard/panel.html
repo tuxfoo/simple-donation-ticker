@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="jscolor.js"></script>
+	<style>
+		.monospace {
+			font-family: monospace;
+		}
+	</style>
+</head>
+<body>
+	<p>
+		Hello, This is where you can configure your donation ticker. More features coming soon. The ticker is designed for 1080p streams
+	</p>
+  <div id=event-wrap>
+
+  <form>
+    <label for="donorColour">Donor Text Colour: </label>
+    <br><input id="donorColour" data-jscolor="{preset:&quot;dark large&quot;}" size="4" class="jscolor">
+    <br><label for="textColour">Text Colour: </label>
+    <br><input id="textColour" data-jscolor="{preset:&quot;dark large&quot;}" size="4" class="jscolor">
+    <br><label for="currencySelect">Prefix of Suffix for currency: </label>
+    <select id="currencySelect">
+      <option value="prefix">prefix</option><option value="suffix">suffix</option>
+    </select><br>
+    <label for="currencyName">CurrencyName: </label>
+    <input id="currencyName" size="4"><br>
+    <label for="minAmount">Minimum Amount: </label>
+    <input id="minAmount" size="2"><br>
+    <label for="recent">Recent Tips to Track: </label>
+    <input id="recent" size="2"><br>
+    <br><label for="modeSelect">Ticker Mode: </label>
+    <select id="modeSelect">
+      <option value="latest">latest</option><option value="top">top tipper's</option>
+    </select><br>
+    <button id="settings" type="submit">Save</button>
+    <label for="manualName">Manually Add Donor Name: </label>
+    <input id="manualName" size="2"><br>
+    <label for="manualAmount">Manually Add Amount: </label>
+    <input id="manualAmount" size="4"><br>
+    <button id="manual" type="submit">Save</button>
+  </form>
+  </div>
+	<script>
+  const settings = nodecg.Replicant('settings');
+  const manual = nodecg.Replicant('manual');
+
+  NodeCG.waitForReplicants(settings).then(() => {  
+    loadSettings(settings.value);
+    jscolor.install();
+  });
+  function loadSettings (value) {
+    document.getElementById('minAmount').value = value.minAmount;
+    document.getElementById('donorColour').value = value.donorColour;
+    document.getElementById('textColour').value = value.textColour;
+    document.getElementById('currencySelect').value = value.currency;
+    document.getElementById('recent').value = value.recent;
+    document.getElementById('currencyName').value = value.currencyName;
+    document.getElementById('modeSelect').value = value.mode;
+  }
+  // save settings
+  document.getElementById('settings').addEventListener('click', e => {
+    settings.value = {
+      minAmount: document.getElementById('minAmount').value,
+      donorColour: document.getElementById('donorColour').value,
+      textColour: document.getElementById('textColour').value,
+      currency: document.getElementById('currencySelect').value,
+      recent: document.getElementById('recent').value,
+      currencyName: document.getElementById('currencyName').value,
+      mode: document.getElementById('modeSelect').value};
+  });
+  document.getElementById('manual').addEventListener('click', e => {
+    manual.value = {
+      name: document.getElementById('manualName').value,
+      amount: document.getElementById('manualAmount').value
+    };
+  });
+	</script>
+</body>
+</html>

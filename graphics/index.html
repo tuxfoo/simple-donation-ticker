@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <style>
+      body, html, #wrap {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+      }
+      #marquee-wrapper > div {
+          white-space: nowrap;
+          padding-left: 100%;
+          display: inline-block;
+      }
+      #marquee-wrapper {
+          position: relative;
+          top: 45%;
+          transform: translateY(-50%); /* or try 50% */
+          overflow: hidden;
+      }
+      .item {
+        display: inline-block;
+        margin: 10px;
+        font: 800 36px 'Open Sans';
+      }
+      .marquee {
+        animation: 60s linear 0s infinite normal none running marquee;
+        padding-left: 100%;
+        float: none;
+      }
+      @-moz-keyframes marquee {
+        0% {
+          transform: translateX(100%);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+      @-webkit-keyframes marquee {
+        0% {
+          transform: translateX(100%);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+      @keyframes marquee {
+        0% {
+          -moz-transform: translateX(100%);
+          -webkit-transform: translateX(100%);
+          transform: translateX(100%)
+        }
+        100% {
+          -moz-transform: translateX(-100%);
+          -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+        }
+      }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <div id="marquee-wrapper">
+      <div id="marquee" class="marquee">
+        <div id="items-wrapper">
+        </div>
+      </div>
+    </div>
+  </div>
+	<script>
+    const tipTotals = nodecg.Replicant("tipTotals");
+    const settings = nodecg.Replicant("settings");
+    const recentTips = nodecg.Replicant('recentTips');
+    const items = document.getElementById("items-wrapper");
+    const div = document.getElementById("marquee");
+
+
+    NodeCG.waitForReplicants(recentTips, settings).then(() => {
+      //For testing only
+      if (settings.value.mode == "top") {
+        renderTips(tipTotals.value);
+      } else {
+        renderTips(recentTips.value);
+      }
+      const reload = setInterval(reloadTicker, 30000);
+    });
+
+    function getTranslateValues(element) {
+        const style = window.getComputedStyle(element);
+        const matrix = style['transform'] || style.webKitTransform || style.mozTransfrom;
+
+        if (matrix == 'none' || typeof matrix == 'undefined') {
+          return {
+            x: 0,
+            y: 0,
+            z: 0
+          }
+        }
+        const matrixType = matrix.includes('3d') ? '3d' : '2d';
+        const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ');
+
+        if (matrixType == '2d') {
+          return {
+            x: matrixValues[4],
+            y: matrixValues[5],
+            z: 0
+          }
+        }
+    }
+
+    function renderTips(arr) {
+      //Loop through tips and render them
+      var div = document.getElementById("items-wrapper");
+      for (const value of arr) {
+        var tipExists = document.getElementById("item" + arr.indexOf(value));
+        // Do not display more than the amount set by the user
+        if ( arr.indexOf(value) <= settings.value.recent ) {
+          // Already Exists, For top tippers mode only
+          if (tipExists) {
+            // Replace Amount
+            console.log("Tips Already Exist");
+            break;
+          }
+          // Create a new entry
+          else {
+            if (parseFloat(value.amount) >= parseFloat(settings.value.minAmount)) {
+              var tip = document.createElement('div');
+              tip.setAttribute("id", "item" + arr.indexOf(value));
+              tip.setAttribute("class", "item");
+              var spanName = document.createElement('span');
+              var nameText = document.createTextNode(
+                value.name + " : "
+              );
+              spanName.setAttribute("style", "color: " + settings.value.donorColour);
+              spanName.appendChild(nameText);
+              var spanAmount = document.createElement('span');
+              if (settings.value.currency == "suffix") {
+                var amountText = document.createTextNode(
+                  value.amount + settings.value.currencyName
+                );
+              }
+              else {
+                var amountText = document.createTextNode(
+                  settings.value.currencyName + value.amount
+                );
+              }
+              spanAmount.setAttribute("style", "color: " + settings.value.textColour);
+              spanAmount.appendChild(amountText);
+
+              tip.appendChild(spanName);
+              tip.appendChild(spanAmount);
+              div.appendChild(tip);
+            }
+          }
+        }
+        else {
+          console.log("Exceeded amount of tips set by user.");
+          break;
+        }
+      }
+    }
+
+    function removeAllChildren(parent) {
+      while (parent.lastElementChild) {
+        parent.removeChild(parent.lastElementChild);
+      }
+    }
+
+    function reloadTicker() {
+      removeAllChildren(document.getElementById("items-wrapper"));
+      if (settings.value.mode == "top") {
+        renderTips(tipTotals.value);
+      } else {
+        renderTips(recentTips.value);
+      }
+      if (recentTips.value) {
+        /*if (getTranslateValues(div).x < -2200){
+          nodecg.log.info('Rerender');
+          removeAllChildren(document.getElementById("items-wrapper"));
+          if (settings.value.mode == "top") {
+            renderTips(tipTotals.value);
+          } else {
+            renderTips(recentTips.value);
+          }
+        }*/
+      }
+    }
+
+	</script>
+</body>
+</html>
