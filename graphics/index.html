@@ -125,6 +125,7 @@
           // Create a new entry
           else {
             if (parseFloat(value.amount) >= parseFloat(settings.value.minAmount)) {
+              var amount = parseFloat(value.amount);
               var tip = document.createElement('div');
               tip.setAttribute("id", "item" + arr.indexOf(value));
               tip.setAttribute("class", "item");
@@ -137,12 +138,12 @@
               var spanAmount = document.createElement('span');
               if (settings.value.currency == "suffix") {
                 var amountText = document.createTextNode(
-                  value.amount + settings.value.currencyName
+                  amount.toFixed(2) + settings.value.currencyName
                 );
               }
               else {
                 var amountText = document.createTextNode(
-                  settings.value.currencyName + value.amount
+                  settings.value.currencyName + amount.toFixed(2)
                 );
               }
               spanAmount.setAttribute("style", "color: " + settings.value.textColour);
