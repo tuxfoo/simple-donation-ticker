@@ -26,27 +26,35 @@
     </select><br>
     <label for="currencyName">CurrencyName: </label>
     <input id="currencyName" size="4"><br>
+    <select id="fontSelect"></select>
+    <label for="fonySize">fontSize: </label>
+    <input id="fontSize" size="2"><br>
     <label for="minAmount">Minimum Amount: </label>
     <input id="minAmount" size="2"><br>
-    <label for="recent">Recent Tips to Track: </label>
+    <label for="recent">Amount of donations to display: </label><br>
     <input id="recent" size="2"><br>
     <br><label for="modeSelect">Ticker Mode: </label>
     <select id="modeSelect">
       <option value="latest">latest</option><option value="top">top tipper's</option>
     </select><br>
-    <button id="settings" type="submit">Save</button>
-    <label for="manualName">Manually Add Donor Name: </label>
-    <input id="manualName" size="2"><br>
-    <label for="manualAmount">Manually Add Amount: </label>
-    <input id="manualAmount" size="4"><br>
-    <button id="manual" type="submit">Save</button>
+    <button id="settings" type="submit">Save</button><br>
+    <p>
+      Here you can manually add donations, if you are using odysee make sure to include the @ before the username.
+    </p><br>
+    <label for="manualName">Donor Name: </label><br>
+    <input id="manualName" size="10"><br>
+    <label for="manualAmount">Amount: </label><br>
+    <input id="manualAmount" size="3"><br>
+    <button id="manual" type="submit">Add</button>
   </form>
   </div>
 	<script>
   const settings = nodecg.Replicant('settings');
   const manual = nodecg.Replicant('manual');
-
-  NodeCG.waitForReplicants(settings).then(() => {  
+  var fonts = ["'Open Sans'", "Arial, sans-serif", "'Times New Roman', serif", "'Courier New', monospace", "'Brush Script MT', cursive", "Palanquin", "'Aclonica'" , "'Aladin'", "'Amita'", "''Audiowide'", "'Balsamiq Sans'", "'Bebas Neue'", "'Fontdiner Swanky'"];
+  var font = document.getElementById("fontSelect");
+  fonts.forEach(populateFontList);
+  NodeCG.waitForReplicants(settings).then(() => {
     loadSettings(settings.value);
     jscolor.install();
   });
@@ -58,6 +66,8 @@
     document.getElementById('recent').value = value.recent;
     document.getElementById('currencyName').value = value.currencyName;
     document.getElementById('modeSelect').value = value.mode;
+    document.getElementById('fontSize').value = value.fontSize;
+    document.getElementById('fontSelect').value = value.font;
   }
   // save settings
   document.getElementById('settings').addEventListener('click', e => {
@@ -68,7 +78,9 @@
       currency: document.getElementById('currencySelect').value,
       recent: document.getElementById('recent').value,
       currencyName: document.getElementById('currencyName').value,
-      mode: document.getElementById('modeSelect').value};
+      mode: document.getElementById('modeSelect').value,
+      fontSize: document.getElementById('fontSize').value,
+      font: document.getElementById('fontSelect').value}
   });
   document.getElementById('manual').addEventListener('click', e => {
     manual.value = {
@@ -76,6 +88,15 @@
       amount: document.getElementById('manualAmount').value
     };
   });
+
+  // Populate the font menu
+  function populateFontList(value, index, array) {
+    var option = document.createElement('option');
+    option.setAttribute('value', value);
+    var optionLabel = document.createTextNode(value);
+    option.appendChild(optionLabel);
+    font.appendChild(option);
+  }
 	</script>
 </body>
 </html>

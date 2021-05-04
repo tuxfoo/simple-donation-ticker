@@ -4,7 +4,7 @@ module.exports = function (nodecg) {
 	// A list of tippers totals
 	nodecg.Replicant('tipTotals', { defaultValue: []});
 	nodecg.Replicant('recentTips', { defaultValue: []});
-	nodecg.Replicant('settings', { defaultValue: {minAmount: 1, donorColour: "#9B91FF", textColour: "#32C3A6", currency: "suffix", recent: 15, currencyName: "LBC", mode: "top"}});
+	nodecg.Replicant('settings', { defaultValue: {minAmount: 1, donorColour: "#9B91FF", textColour: "#32C3A6", currency: "suffix", recent: 15, currencyName: "LBC", mode: "top", fontSize: "36", font: "'Open Sans'"}});
   nodecg.Replicant('manual', { defaultValue: {}, persistent: false });
 	const router = nodecg.Router();
 	var tipTotals = nodecg.Replicant('tipTotals');

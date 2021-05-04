@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href='https://fonts.googleapis.com/css?family=Aclonica' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Aladin' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Amita' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Balsamiq Sans' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Bebas Neue' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Fontdiner Swanky' rel='stylesheet'>
   <style>
       body, html, #wrap {
           width: 100%;
@@ -129,6 +136,7 @@
               var tip = document.createElement('div');
               tip.setAttribute("id", "item" + arr.indexOf(value));
               tip.setAttribute("class", "item");
+              tip.setAttribute("style", "font: 800 " + settings.value.fontSize + "px " + settings.value.font);
               var spanName = document.createElement('span');
               var nameText = document.createTextNode(
                 value.name + " : "
