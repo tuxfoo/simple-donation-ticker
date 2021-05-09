@@ -66,7 +66,7 @@
       }
   </style>
 </head>
-<body>
+<body id="body">
   <div id="wrap">
     <div id="marquee-wrapper">
       <div id="marquee" class="marquee">
@@ -180,8 +180,10 @@
       removeAllChildren(document.getElementById("items-wrapper"));
       if (settings.value.mode == "top") {
         renderTips(tipTotals.value);
+        updateCSS();
       } else {
         renderTips(recentTips.value);
+        updateCSS();
       }
       if (recentTips.value) {
         /*if (getTranslateValues(div).x < -2200){
@@ -196,6 +198,18 @@
       }
     }
 
+    function updateCSS() {
+      var body = document.getElementById("body");
+
+      if (document.contains(document.getElementById("customCSS"))) {
+        document.getElementById("customCSS").remove();
+      }
+      var style = document.createElement("style");
+      style.setAttribute("id", "customCSS");
+      var userCSS = document.createTextNode(settings.value.customCSS);
+      style.appendChild(userCSS);
+      body.appendChild(style);
+    }
 	</script>
 </body>
 </html>

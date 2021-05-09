@@ -37,6 +37,8 @@
     <select id="modeSelect">
       <option value="latest">latest</option><option value="top">top tipper's</option>
     </select><br>
+    <label for="customCSS">Custom CSS</label><br>
+    <textarea id="customCSS"></textarea><br>
     <button id="settings" type="submit">Save</button><br>
     <p>
       Here you can manually add donations, if you are using odysee make sure to include the @ before the username.
@@ -68,6 +70,7 @@
     document.getElementById('modeSelect').value = value.mode;
     document.getElementById('fontSize').value = value.fontSize;
     document.getElementById('fontSelect').value = value.font;
+    document.getElementById('customCSS').value = value.customCSS;
   }
   // save settings
   document.getElementById('settings').addEventListener('click', e => {
@@ -80,7 +83,8 @@
       currencyName: document.getElementById('currencyName').value,
       mode: document.getElementById('modeSelect').value,
       fontSize: document.getElementById('fontSize').value,
-      font: document.getElementById('fontSelect').value}
+      font: document.getElementById('fontSelect').value,
+      customCSS: document.getElementById('customCSS').value}
   });
   document.getElementById('manual').addEventListener('click', e => {
     manual.value = {
