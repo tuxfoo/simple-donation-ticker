@@ -9,6 +9,9 @@ There will be multiple layouts and customisation options.
 
 This bundle is only responsible for creating and rendering a list of tippers. The events will be triggered/activated by other bundles/software/scripts/bots using a rest API.
 
+Currently there is a connector for the following streaming services.
+* Odysee https://github.com/tuxfoo/odysee-simple-alerts-connector
+
 ## How to send donations using cURL
 
 Make sure to replace the username and amount
@@ -21,3 +24,6 @@ Make sure to replace the username and amount
 ```
 invoke-webrequest -Uri http://localhost:9090/simple-donation-ticker/ticke -Method POST -Headers @{'Content-Type' = 'application/json; charset=utf-8'} -Body '{"name":"Foobar", "amount": 5 }' -UseBasicParsing
 ```
+
+## Preview of ticker in actions (on top of stream)
+![preview 1](https://github.com/tuxfoo/simple-donation-ticker/blob/main/preview.jpg?raw=true)
